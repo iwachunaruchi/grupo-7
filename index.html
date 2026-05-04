@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Usar servicios de Azure en la nube</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="hero">
+    <h1>Usar los servicios de Azure en la nube</h1>
+    <p>Guía introductoria y ejemplo Docker para publicar una página estática en Azure.</p>
+  </header>
+
+  <main class="content">
+    <section>
+      <h2>¿Por qué Azure?</h2>
+      <p>Microsoft Azure ofrece una amplia gama de servicios en la nube: cómputo, almacenamiento, bases de datos, contenedores, funciones sin servidor y más. Azure es ideal para desplegar aplicaciones desde sitios estáticos hasta arquitecturas distribuidas.</p>
+    </section>
+
+    <section>
+      <h2>Servicios clave</h2>
+      <ul>
+        <li><strong>Azure App Service:</strong> despliegue de aplicaciones web gestionadas.</li>
+        <li><strong>Azure Container Registry (ACR):</strong> almacena imágenes Docker privadas.</li>
+        <li><strong>Azure Kubernetes Service (AKS):</strong> orquestación de contenedores.</li>
+        <li><strong>Azure Functions:</strong> funciones serverless para lógica de negocio.</li>
+        <li><strong>Azure Blob Storage:</strong> almacenamiento de objetos para archivos estáticos.</li>
+        <li><strong>Azure Cosmos DB:</strong> base de datos distribuida globalmente.</li>
+        <li><strong>Azure Container Instances (ACI):</strong> ejecución rápida de contenedores sin orquestador.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Cómo comenzar (resumen)</h2>
+      <ol>
+        <li>Crear una cuenta y suscribirse a Azure (portal.azure.com).</li>
+        <li>Instalar la Azure CLI: <code>az</code>.</li>
+        <li>Preparar tu aplicación localmente y crear una imagen Docker.</li>
+        <li>Subir la imagen a ACR o usar Docker Hub.</li>
+        <li>Desplegar en App Service, ACI o AKS según necesidades.</li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>Ejemplo práctico</h2>
+      <p>Este repositorio contiene una página estática y un <strong>Dockerfile</strong> listo para construir una imagen que sirve la página con <em>nginx</em>. Sigue las instrucciones en el README para construir y desplegar en Azure.</p>
+    </section>
+
+    <section>
+      <h2>Recursos útiles</h2>
+      <ul>
+        <li><a href="https://docs.microsoft.com/azure/">Documentación oficial de Azure</a></li>
+        <li><a href="https://docs.microsoft.com/cli/azure/">Azure CLI</a></li>
+        <li><a href="https://learn.microsoft.com/azure/container-registry/">Azure Container Registry</a></li>
+        <li><a href="https://learn.microsoft.com/azure/app-service/">Azure App Service</a></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Generado: Guía y Dockerfile de ejemplo para desplegar en Azure.</p>
+  </footer>
+</body>
+</html>
