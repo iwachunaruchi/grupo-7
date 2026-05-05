@@ -49,3 +49,21 @@ az container create --resource-group MyResourceGroup --name mycontainer --image 
 - https://docs.microsoft.com/azure/
 - https://docs.microsoft.com/cli/azure/
 
+## Subir imágenes de prueba a Azure Blob Storage
+Se ha añadido una página de prueba `upload.html` que permite subir una imagen directamente desde el navegador.
+
+Pasos rápidos:
+
+1. Genera una SAS de contenedor (ejemplo con Azure CLI) — esto crea una URL que incluye el token SAS:
+
+```bash
+# Ejemplo: generar SAS para un contenedor por 1 hora
+az storage container generate-sas --account-name <cuenta> --name <contenedor> --permissions acdlrw --expiry "$(date -u -d '1 hour' '+%Y-%m-%dT%H:%MZ')" --output tsv
+```
+
+2. Copia la URL del contenedor con SAS (debe verse como `https://<cuenta>.blob.core.windows.net/<contenedor>?sv=...`).
+3. Abre `upload.html`, pega la URL del contenedor con SAS, selecciona una imagen y pulsa `Subir`.
+
+Notas de seguridad: usa SAS temporales y permisos mínimos para pruebas. No incrustes SAS en código público.
+
+

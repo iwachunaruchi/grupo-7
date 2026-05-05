@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Subir a Azure Storage</title>
+  <link rel="stylesheet" href="styles.css">
+  
+  <script id="azscript" src="https://unpkg.com/@azure/storage-blob@12.14.0/browser/azure-storage-blob.min.js"></script>
+  <script>
+    (function(){
+      const azScript = document.getElementById('azscript');
+      if (!azScript) return;
+      azScript.addEventListener('load', () => {
+        console.log('azblob cargado:', typeof azblob !== 'undefined');
+      });
+      azScript.addEventListener('error', () => {
+        console.error('Error cargando azblob desde CDN. Comprueba la conexión o sirve la página por HTTP(S).');
+        const status = document.getElementById('statusMessage');
+        if (status) {
+          status.textContent = 'No se pudo cargar el SDK de Azure (azblob). Descarga el archivo y sírvelo localmente, o revisa la conexión.';
+          status.style.color = 'red';
+        }
+      });
+    })();
+  </script>
+</head>
+<body>
+  <header class="hero">
+    <h1>Subir Imagen a Azure Storage, prueba de replicacion</h1>
+    <p>Prueba de integración directa desde el Frontend</p>
+  </header>
+
+  <main class="content">
+    <section>
+      <a href="index.html">← Volver al inicio</a>
+      <hr style="margin: 15px 0; border: 0; border-top: 1px solid #eee;">
+      
+      <h2>Selecciona una imagen</h2>
+      <div style="background: #fff3cd; padding: 10px; margin-bottom: 15px; border-left: 4px solid #ffc107; font-size: 0.9em;">
+        <strong>Nota:</strong> Para que esto funcione, debes reemplazar el SAS Token y el nombre de tu cuenta en el código fuente (líneas de abajo).
+      </div>
+
+      <input type="file" id="fileInput" accept="image/*" style="margin-bottom: 15px;" />
+      <br>
+      <button id="uploadButton" style="background:#00a3ff; color:white; padding:10px 20px; border:none; border-radius:4px; cursor:pointer;">Subir Imagen</button>
+      
+      <p id="statusMessage" style="margin-top: 15px; font-weight: bold;"></p>
+    </section>
+  </main>
+
+  <script>
+    // ==========================================
+    // CONFIGURA ESTAS TRES VARIABLES CON TU AZURE
+    // ==========================================
+    const accountName = "grupo7storage"; 
+    const containerName = "grupo7container"; 
+    const sasToken = "sv=2025-11-05&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2026-05-07T10:04:01Z&st=2026-05-05T01:49:01Z&spr=https,http&sig=36h%2FICpyOV%2BWkvXt8yd%2BCed0CO0MISlTHjfVlkdj0Nc%3D"; 
+    // ==========================================
+
+    const fileInput = document.getElementById('fileInput');
+    const uploadButton = document.getElementById('uploadButton');
+    const statusMessage = document.getElementById('statusMessage');
+
+    uploadButton.addEventListener('click', async () => {
+      if (!fileInput.files.length) {
+        statusMessage.textContent = 'Por favor, selecciona una imagen primero.';
+        statusMessage.style.color = 'red';
+        return;
+      }
+
+      const file = fileInput.files[0];
+      statusMessage.textContent = 'Subiendo...';
+      statusMessage.style.color = 'blue';
+
+      try {
+        // Subida directa usando REST (fetch) y SAS token — no requiere SDK
+        const url = `https://${accountName}.blob.core.windows.net/${containerName}/${encodeURIComponent(file.name)}?${sasToken}`;
+
+        const resp = await fetch(url, {
+          method: 'PUT',
+          headers: {
+            'x-ms-blob-type': 'BlockBlob',
+            'Content-Type': file.type
+          },
+          body: file
+        });
+
+        if (!resp.ok) {
+          const text = await resp.text().catch(() => '');
+          throw new Error(`HTTP ${resp.status} ${resp.statusText} ${text}`);
+        }
+
+        statusMessage.textContent = `¡Éxito! La imagen "${file.name}" se subió a Azure.`;
+        statusMessage.style.color = 'green';
+
+      } catch (error) {
+        console.error(error);
+        statusMessage.textContent = 'Error al subir: ' + (error.message || error);
+        statusMessage.style.color = 'red';
+      }
+    });
+  </script>
+</body>
+</html>
